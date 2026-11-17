@@ -1,0 +1,12 @@
+**/build/
+**/managed_components/
+**/wifi_local.h
+**/sdkconfig.old
+**/.vscode/
+**/.clangd
+**/.codex/
+**/.agents/
+/wifi_estacion/
+/nodo_mqtt/panel_web/
+/nodo_mqtt/entrega.gitignore
+/nodo_mqtt/entrega.README.md
