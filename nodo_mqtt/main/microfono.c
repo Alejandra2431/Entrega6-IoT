@@ -165,8 +165,8 @@ static void configurar_codec(void)
     es8311_codec_cfg_t es_cfg = {
         .ctrl_if = ctrl,
         .gpio_if = gpio,
-        /* Solo ADC: no se graba ni se reproduce audio. */
-        .codec_mode = ESP_CODEC_DEV_WORK_MODE_ADC,
+        /* Configuracion de la App 5; TX envia silencio y el DAC se silencia. */
+        .codec_mode = ESP_CODEC_DEV_WORK_MODE_BOTH,
         .master_mode = false,        /* manda el ESP32-S2, obedece el códec */
         .use_mclk = true,
         .pa_pin = PA_ENABLE,
@@ -181,7 +181,7 @@ static void configurar_codec(void)
     ESP_ERROR_CHECK(es8311 != NULL ? ESP_OK : ESP_ERR_NOT_FOUND);
 
     esp_codec_dev_cfg_t dev = {
-        .dev_type = ESP_CODEC_DEV_TYPE_IN,
+        .dev_type = ESP_CODEC_DEV_TYPE_IN_OUT,
         .codec_if = es8311,
         .data_if = datos,
     };
@@ -203,7 +203,8 @@ static void configurar_codec(void)
     ESP_ERROR_CHECK(esp_codec_dev_open(s_codec, &muestreo)
                         == ESP_CODEC_DEV_OK ? ESP_OK : ESP_FAIL);
 
-
+    ESP_ERROR_CHECK(esp_codec_dev_set_out_mute(s_codec, true)
+                        == ESP_CODEC_DEV_OK ? ESP_OK : ESP_FAIL);
     ESP_ERROR_CHECK(esp_codec_dev_set_in_gain(s_codec, (float)24)
                         == ESP_CODEC_DEV_OK ? ESP_OK : ESP_FAIL);
 }
